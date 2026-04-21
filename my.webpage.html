@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Estate | Complete Investment Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #0a0a0a;
+            color: #e5d9b5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            padding: 2rem;
+            border-bottom: 2px solid #c9a03d;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            letter-spacing: 4px;
+            font-weight: 300;
+            color: #c9a03d;
+        }
+
+        .header p {
+            color: #888;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .search-section {
+            background: #111;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #2a2a2a;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 14px 20px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 40px;
+            color: #e5d9b5;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            border-color: #c9a03d;
+            outline: none;
+        }
+
+        .search-box button {
+            background: #c9a03d;
+            color: #0a0a0a;
+            padding: 12px 28px;
+            border-radius: 40px;
+            margin: 0;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 6px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .filter-chip.active {
+            background: #c9a03d;
+            color: #0a0a0a;
+            border-color: #c9a03d;
+        }
+
+        .filter-chip:hover {
+            border-color: #c9a03d;
+        }
+
+        .form-card {
+            background: #111;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid #2a2a2a;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+        }
+
+        .form-card h2 {
+            color: #c9a03d;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            border-left: 4px solid #c9a03d;
+            padding-left: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #aaa;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            color: #e5d9b5;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #c9a03d;
+            box-shadow: 0 0 8px rgba(201,160,61,0.3);
+        }
+
+        button {
+            background: #c9a03d;
+            color: #0a0a0a;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background: #b58c2e;
+            transform: scale(1.02);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #c9a03d;
+            margin: 2rem 0 1rem;
+            font-weight: 300;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .property-card {
+            background: #111;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #222;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.6);
+            border-color: #c9a03d;
+        }
+
+        .property-card.sold {
+            opacity: 0.9;
+            border-left: 4px solid #c44;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .property-type {
+            display: inline-block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: #c9a03d20;
+            color: #c9a03d;
+            padding: 4px 12px;
+            border-radius: 30px;
+            margin-bottom: 1rem;
+        }
+
+        .sold-badge {
+            background: #c44;
+            color: white;
+            margin-left: 0.5rem;
+        }
+
+        .property-name {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .date-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .purchase-date, .sold-date {
+            font-size: 0.8rem;
+            color: #777;
+            background: #1a1a1a;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .detail-label {
+            color: #888;
+        }
+
+        .detail-value {
+            color: #e5d9b5;
+            font-weight: 500;
+        }
+
+        .profit-positive {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .profit-negative {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .seller-name {
+            color: #ffb347;
+        }
+
+        .buyer-name {
+            color: #ffb347;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 2%;
+            margin-top: 1rem;
+        }
+
+        .edit-btn, .delete-btn {
+            background: transparent;
+            border: 1px solid #c9a03d;
+            color: #c9a03d;
+            padding: 8px 16px;
+            width: 48%;
+            margin-top: 0;
+            font-size: 0.8rem;
+            display: inline-block;
+            text-align: center;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .edit-btn:hover {
+            background: #c9a03d20;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .delete-btn {
+            border-color: #500;
+            color: #c44;
+        }
+
+        .delete-btn:hover {
+            background: #500;
+            color: white;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 3rem;
+            color: #555;
+            font-style: italic;
+            background: #0d0d0d;
+            border-radius: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #111;
+            border-radius: 16px;
+            padding: 1rem;
+            border-left: 3px solid #c9a03d;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #c9a03d;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #777;
+            margin-top: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .total-profit {
+            border-left-color: #4caf50;
+        }
+
+        .total-profit .stat-number {
+            color: #4caf50;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #1a1a1a;
+            margin-top: 3rem;
+            color: #555;
+            font-size: 0.8rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #111;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 750px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid #c9a03d;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .modal-content h3 {
+            color: #c9a03d;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-left: 4px solid #c9a03d;
+            padding-left: 1rem;
+        }
+
+        .modal-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-full {
+            grid-column: span 2;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: flex-end;
+        }
+
+        .modal-actions button {
+            margin: 0;
+            padding: 10px 20px;
+        }
+
+        .cancel-modal {
+            background: #333;
+        }
+
+        .cancel-modal:hover {
+            background: #444;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+            .container { padding: 1rem; }
+            .property-grid { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; gap: 0.5rem; }
+            .edit-btn, .delete-btn { width: 100%; }
+            .date-row { flex-direction: column; }
+            .modal-row { grid-template-columns: 1fr; }
+            .modal-full { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>✦ Blend Real Estate ✦</h1>
+    <p>Land • Houses • Apartments </p>
+</div>
+
+<div class="container">
+    <!-- Search & Filter -->
+    <div class="search-section">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search by name, seller, buyer, agency, notes...">
+            <button id="clearSearchBtn">✖ Clear</button>
+        </div>
+        <div class="filter-buttons" id="filterButtons">
+            <div class="filter-chip active" data-filter="all">All</div>
+            <div class="filter-chip" data-filter="Land">🌾 Land</div>
+            <div class="filter-chip" data-filter="House">🏰 House</div>
+            <div class="filter-chip" data-filter="Apartment">🏢 Apartment</div>
+            <div class="filter-chip" data-filter="sold">Sold</div>
+            <div class="filter-chip" data-filter="active">Active</div>
+        </div>
+    </div>
+
+    <!-- Add Property Form -->
+    <div class="form-card">
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label>PROPERTY TYPE</label>
+                <select id="propertyType">
+                    <option value="Land">🌾 Land</option>
+                    <option value="House">🏰 House</option>
+                    <option value="Apartment">🏢 Apartment</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>PROPERTY NAME / LOCATION</label>
+                <input type="text" id="propertyName" placeholder="e.g., Golden Hills Villa">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>PURCHASE DATE</label>
+                <input type="date" id="purchaseDate">
+            </div>
+            <div class="form-group">
+                <label>PURCHASE PRICE ($)</label>
+                <input type="number" id="purchasePrice" placeholder="e.g., 500000">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>SELLER NAME (previous owner)</label>
+                <input type="text" id="sellerName" placeholder="e.g., John Smith, ABC Trust">
+            </div>
+            <div class="form-group">
+                <label>BUY AGENCY (your agency)</label>
+                <input type="text" id="buyAgency" placeholder="e.g., Sotheby's, Compass">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>ADDITIONAL NOTES</label>
+                <input type="text" id="notes" placeholder="sq ft, bedrooms, view, etc.">
+            </div>
+        </div>
+        <button id="addBtn">✦ ADD TO PORTFOLIO ✦</button>
+    </div>
+
+    <!-- Statistics with Profit -->
+    <div class="stats" id="statsContainer"></div>
+
+    <!-- Property Listings -->
+    
+    <div id="propertyGrid" class="property-grid">
+        <div class="empty-message">✨ Add your first luxury property above ✨</div>
+    </div>
+</div>
+
+<footer>
+    Private Collection — Every property tells a story from purchase to sale
+</footer>
+
+<!-- Modal for Editing Property -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>✎ Edit Property Details</h3>
+        <form id="editForm">
+            <div class="modal-row">
+                <div class="form-group">
+                    <label>PROPERTY TYPE</label>
+                    <select id="edit_type" required>
+                        <option value="Land">🌾 Land</option>
+                        <option value="House">🏰 House</option>
+                        <option value="Apartment">🏢 Apartment</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>PROPERTY NAME</label>
+                    <input type="text" id="edit_name" required>
+                </div>
+            </div>
+            <div class="modal-row">
+                <div class="form-group">
+                    <label>PURCHASE DATE</label>
+                    <input type="date" id="edit_purchaseDate" required>
+                </div>
+                <div class="form-group">
+                    <label>PURCHASE PRICE ($)</label>
+                    <input type="number" id="edit_purchasePrice" required>
+                </div>
+            </div>
+            <div class="modal-row">
+                <div class="form-group">
+                    <label>SELLER NAME (previous owner)</label>
+                    <input type="text" id="edit_sellerName">
+                </div>
+                <div class="form-group">
+                    <label>BUY AGENCY</label>
+                    <input type="text" id="edit_buyAgency" required>
+                </div>
+            </div>
+            <div class="modal-row modal-full">
+                <div class="form-group">
+                    <label>NOTES</label>
+                    <input type="text" id="edit_notes">
+                </div>
+            </div>
+            <div id="soldFields" style="display: none;">
+                <hr style="border-color: #333; margin: 1rem 0;">
+                <h4 style="color: #c9a03d; margin-bottom: 1rem;">🏷️ Sold Information</h4>
+                <div class="modal-row">
+                    <div class="form-group">
+                        <label>SOLD DATE</label>
+                        <input type="date" id="edit_soldDate">
+                    </div>
+                    <div class="form-group">
+                        <label>SOLD PRICE ($)</label>
+                        <input type="number" id="edit_soldPrice">
+                    </div>
+                </div>
+                <div class="modal-row">
+                    <div class="form-group">
+                        <label>SELL AGENCY</label>
+                        <input type="text" id="edit_sellAgency">
+                    </div>
+                    <div class="form-group">
+                        <label>BUYER NAME (end buyer)</label>
+                        <input type="text" id="edit_buyerName">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="cancel-modal" id="closeModalBtn">Cancel</button>
+                <button type="submit">💾 Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let properties = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
+    let currentEditIndex = null;
+
+    function loadFromStorage() {
+        const saved = localStorage.getItem('luxuryRealEstateV7');
+        if (saved) {
+            properties = JSON.parse(saved);
+        } else {
+            properties = [
+                { 
+                    type: 'Land', name: 'Serenity Valley Estate', 
+                    purchaseDate: '2023-05-15', purchasePrice: 450000, 
+                    sellerName: "Greenfield Trust", buyAgency: "Christie's International",
+                    sellAgency: null, buyerName: null,
+                    notes: '12 acres, ocean view', 
+                    soldDate: null, soldPrice: null, isSold: false 
+                },
+                { 
+                    type: 'House', name: 'Villa D\'Oro', 
+                    purchaseDate: '2022-11-20', purchasePrice: 1250000, 
+                    sellerName: "Bianchi Family", buyAgency: "Sotheby's",
+                    sellAgency: null, buyerName: null,
+                    notes: '6 bedrooms, infinity pool', 
+                    soldDate: null, soldPrice: null, isSold: false 
+                },
+                { 
+                    type: 'Apartment', name: 'Penthouse 42', 
+                    purchaseDate: '2024-01-10', purchasePrice: 890000, 
+                    sellerName: "CityView Developers", buyAgency: "Compass",
+                    sellAgency: "Keller Williams", buyerName: "John & Sarah Mitchell",
+                    notes: 'Central park view', 
+                    soldDate: '2024-06-15', soldPrice: 975000, isSold: true 
+                }
+            ];
+        }
+        render();
+    }
+
+    function saveToStorage() {
+        localStorage.setItem('luxuryRealEstateV7', JSON.stringify(properties));
+    }
+
+    function formatMoney(amount) {
+        if (!amount && amount !== 0) return '—';
+        return '$' + amount.toLocaleString();
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '—';
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+        });
+    }
+
+    function calculateProfit(prop) {
+        if (!prop.isSold || !prop.soldPrice) return null;
+        return prop.soldPrice - prop.purchasePrice;
+    }
+
+    function addProperty() {
+        const type = document.getElementById('propertyType').value;
+        const name = document.getElementById('propertyName').value.trim();
+        const purchaseDate = document.getElementById('purchaseDate').value;
+        const purchasePrice = parseFloat(document.getElementById('purchasePrice').value);
+        const sellerName = document.getElementById('sellerName').value.trim();
+        const buyAgency = document.getElementById('buyAgency').value.trim();
+        const notes = document.getElementById('notes').value.trim();
+
+        if (!name) {
+            alert('Please enter a property name');
+            return;
+        }
+        if (!purchaseDate) {
+            alert('Please select a purchase date');
+            return;
+        }
+        if (!purchasePrice || isNaN(purchasePrice)) {
+            alert('Please enter a valid purchase price');
+            return;
+        }
+        if (!sellerName) {
+            alert('Please enter the seller name (previous owner)');
+            return;
+        }
+        if (!buyAgency) {
+            alert('Please enter the buy agency');
+            return;
+        }
+
+        properties.unshift({
+            type: type,
+            name: name,
+            purchaseDate: purchaseDate,
+            purchasePrice: purchasePrice,
+            sellerName: sellerName,
+            buyAgency: buyAgency,
+            sellAgency: null,
+            buyerName: null,
+            notes: notes || '—',
+            soldDate: null,
+            soldPrice: null,
+            isSold: false
+        });
+
+        saveToStorage();
+        render();
+
+        document.getElementById('propertyName').value = '';
+        document.getElementById('purchaseDate').value = '';
+        document.getElementById('purchasePrice').value = '';
+        document.getElementById('sellerName').value = '';
+        document.getElementById('buyAgency').value = '';
+        document.getElementById('notes').value = '';
+    }
+
+    function openEditModal(index) {
+        currentEditIndex = index;
+        const prop = properties[index];
+        
+        document.getElementById('edit_type').value = prop.type;
+        document.getElementById('edit_name').value = prop.name;
+        document.getElementById('edit_purchaseDate').value = prop.purchaseDate;
+        document.getElementById('edit_purchasePrice').value = prop.purchasePrice;
+        document.getElementById('edit_sellerName').value = prop.sellerName || '';
+        document.getElementById('edit_buyAgency').value = prop.buyAgency;
+        document.getElementById('edit_notes').value = prop.notes === '—' ? '' : prop.notes;
+        
+        const soldFieldsDiv = document.getElementById('soldFields');
+        if (prop.isSold) {
+            soldFieldsDiv.style.display = 'block';
+            document.getElementById('edit_soldDate').value = prop.soldDate || '';
+            document.getElementById('edit_soldPrice').value = prop.soldPrice || '';
+            document.getElementById('edit_sellAgency').value = prop.sellAgency || '';
+            document.getElementById('edit_buyerName').value = prop.buyerName || '';
+        } else {
+            soldFieldsDiv.style.display = 'none';
+            document.getElementById('edit_soldDate').value = '';
+            document.getElementById('edit_soldPrice').value = '';
+            document.getElementById('edit_sellAgency').value = '';
+            document.getElementById('edit_buyerName').value = '';
+        }
+        
+        document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('editModal').style.display = 'none';
+        currentEditIndex = null;
+    }
+
+    function saveEditFromModal(e) {
+        e.preventDefault();
+        if (currentEditIndex === null) return;
+        
+        const prop = properties[currentEditIndex];
+        
+        const newType = document.getElementById('edit_type').value;
+        const newName = document.getElementById('edit_name').value.trim();
+        const newPurchaseDate = document.getElementById('edit_purchaseDate').value;
+        const newPurchasePrice = parseFloat(document.getElementById('edit_purchasePrice').value);
+        const newSellerName = document.getElementById('edit_sellerName').value.trim();
+        const newBuyAgency = document.getElementById('edit_buyAgency').value.trim();
+        const newNotes = document.getElementById('edit_notes').value.trim() || '—';
+        
+        if (!newName) {
+            alert('Property name cannot be empty');
+            return;
+        }
+        if (!newPurchaseDate) {
+            alert('Purchase date is required');
+            return;
+        }
+        if (isNaN(newPurchasePrice)) {
+            alert('Purchase price must be a number');
+            return;
+        }
+        if (!newSellerName) {
+            alert('Seller name is required');
+            return;
+        }
+        if (!newBuyAgency) {
+            alert('Buy agency is required');
+            return;
+        }
+        
+        prop.type = newType;
+        prop.name = newName;
+        prop.purchaseDate = newPurchaseDate;
+        prop.purchasePrice = newPurchasePrice;
+        prop.sellerName = newSellerName;
+        prop.buyAgency = newBuyAgency;
+        prop.notes = newNotes;
+        
+        const soldFieldsDiv = document.getElementById('soldFields');
+        if (soldFieldsDiv.style.display === 'block') {
+            const newSoldDate = document.getElementById('edit_soldDate').value;
+            const newSoldPrice = parseFloat(document.getElementById('edit_soldPrice').value);
+            const newSellAgency = document.getElementById('edit_sellAgency').value.trim();
+            const newBuyerName = document.getElementById('edit_buyerName').value.trim();
+            
+            if (newSoldDate && !isNaN(newSoldPrice) && newSellAgency && newBuyerName) {
+                prop.isSold = true;
+                prop.soldDate = newSoldDate;
+                prop.soldPrice = newSoldPrice;
+                prop.sellAgency = newSellAgency;
+                prop.buyerName = newBuyerName;
+            } else if (prop.isSold) {
+                if (newSoldDate) prop.soldDate = newSoldDate;
+                if (!isNaN(newSoldPrice)) prop.soldPrice = newSoldPrice;
+                if (newSellAgency) prop.sellAgency = newSellAgency;
+                if (newBuyerName) prop.buyerName = newBuyerName;
+            } else {
+                if (newSoldDate && !isNaN(newSoldPrice) && newSellAgency && newBuyerName) {
+                    prop.isSold = true;
+                    prop.soldDate = newSoldDate;
+                    prop.soldPrice = newSoldPrice;
+                    prop.sellAgency = newSellAgency;
+                    prop.buyerName = newBuyerName;
+                }
+            }
+        } else {
+            prop.isSold = false;
+            prop.soldDate = null;
+            prop.soldPrice = null;
+            prop.sellAgency = null;
+            prop.buyerName = null;
+        }
+        
+        saveToStorage();
+        closeModal();
+        render();
+    }
+
+    function deleteProperty(index) {
+        if (confirm('Remove this property from your portfolio?')) {
+            properties.splice(index, 1);
+            saveToStorage();
+            render();
+        }
+    }
+
+    function getFilteredProperties() {
+        let filtered = properties;
+        
+        if (currentSearch) {
+            const searchLower = currentSearch.toLowerCase();
+            filtered = filtered.filter(p => 
+                p.name.toLowerCase().includes(searchLower) ||
+                (p.sellerName && p.sellerName.toLowerCase().includes(searchLower)) ||
+                (p.buyAgency && p.buyAgency.toLowerCase().includes(searchLower)) ||
+                (p.sellAgency && p.sellAgency.toLowerCase().includes(searchLower)) ||
+                (p.buyerName && p.buyerName.toLowerCase().includes(searchLower)) ||
+                p.notes.toLowerCase().includes(searchLower)
+            );
+        }
+        
+        if (currentFilter === 'sold') {
+            filtered = filtered.filter(p => p.isSold === true);
+        } else if (currentFilter === 'active') {
+            filtered = filtered.filter(p => p.isSold === false);
+        } else if (currentFilter !== 'all') {
+            filtered = filtered.filter(p => p.type === currentFilter && p.isSold === false);
+        }
+        
+        return filtered;
+    }
+
+    function render() {
+        const grid = document.getElementById('propertyGrid');
+        const statsContainer = document.getElementById('statsContainer');
+        
+        const filtered = getFilteredProperties();
+
+        if (!filtered.length) {
+            grid.innerHTML = '<div class="empty-message">🔍 No properties match your search or filter.</div>';
+        } else {
+            grid.innerHTML = '';
+            filtered.forEach((prop) => {
+                const originalIndex = properties.findIndex(p => 
+                    p.name === prop.name && p.purchaseDate === prop.purchaseDate && p.buyAgency === prop.buyAgency
+                );
+                
+                const card = document.createElement('div');
+                card.className = `property-card ${prop.isSold ? 'sold' : ''}`;
+                
+                let typeIcon = '🌾';
+                if (prop.type === 'House') typeIcon = '🏰';
+                if (prop.type === 'Apartment') typeIcon = '🏢';
+                
+                const profit = calculateProfit(prop);
+                const profitHtml = profit !== null ? `
+                    <div class="detail-row">
+                        <span class="detail-label">💰 Profit/Loss</span>
+                        <span class="detail-value ${profit >= 0 ? 'profit-positive' : 'profit-negative'}">
+                            ${profit >= 0 ? '+' : ''}${formatMoney(profit)} (${((profit / prop.purchasePrice) * 100).toFixed(1)}%)
+                        </span>
+                    </div>
+                ` : '';
+                
+                const soldInfoHtml = prop.isSold ? `
+                    <div class="detail-row">
+                        <span class="detail-label">💰 Sold Price</span>
+                        <span class="detail-value">${formatMoney(prop.soldPrice)}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">🏢 Sell Agency</span>
+                        <span class="detail-value">${escapeHtml(prop.sellAgency)}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">👤 Buyer Name</span>
+                        <span class="detail-value buyer-name">${escapeHtml(prop.buyerName)}</span>
+                    </div>
+                    ${profitHtml}
+                ` : '';
+                
+                const soldBadge = prop.isSold ? 
+                    `<span class="property-type sold-badge">SOLD</span>` : '';
+                
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div>
+                            <span class="property-type">${typeIcon} ${prop.type}</span>
+                            ${soldBadge}
+                        </div>
+                        <div class="property-name">${escapeHtml(prop.name)}</div>
+                        <div class="date-row">
+                            <span class="purchase-date">📅 Bought: ${formatDate(prop.purchaseDate)}</span>
+                            ${prop.isSold ? `<span class="sold-date">💸 Sold: ${formatDate(prop.soldDate)}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="detail-row">
+                            <span class="detail-label">🏷️ Seller (previous owner)</span>
+                            <span class="detail-value seller-name">${escapeHtml(prop.sellerName)}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">💵 Purchase Price</span>
+                            <span class="detail-value">${formatMoney(prop.purchasePrice)}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">🏢 Buy Agency</span>
+                            <span class="detail-value">${escapeHtml(prop.buyAgency)}</span>
+                        </div>
+                        ${soldInfoHtml}
+                        <div class="detail-row">
+                            <span class="detail-label">📝 Notes</span>
+                            <span class="detail-value">${escapeHtml(prop.notes)}</span>
+                        </div>
+                        <div class="button-group">
+                            <button class="edit-btn" data-index="${originalIndex}">✎ Edit</button>
+                            <button class="delete-btn" data-index="${originalIndex}">✖ Remove</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-index'));
+                openEditModal(idx);
+            });
+        });
+        
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.getAttribute('data-index'));
+                deleteProperty(idx);
+            });
+        });
+
+        // Render stats
+        const total = properties.length;
+        const active = properties.filter(p => !p.isSold).length;
+        const sold = properties.filter(p => p.isSold).length;
+        
+        const totalInvestment = properties.reduce((sum, p) => sum + p.purchasePrice, 0);
+        const totalRevenue = properties.filter(p => p.isSold).reduce((sum, p) => sum + (p.soldPrice || 0), 0);
+        const totalProfit = totalRevenue - (properties.filter(p => p.isSold).reduce((sum, p) => sum + p.purchasePrice, 0));
+        
+        const landCount = properties.filter(p => p.type === 'Land' && !p.isSold).length;
+        const houseCount = properties.filter(p => p.type === 'House' && !p.isSold).length;
+        const aptCount = properties.filter(p => p.type === 'Apartment' && !p.isSold).length;
+        
+        statsContainer.innerHTML = `
+            <div class="stat-card"><div class="stat-number">${total}</div><div class="stat-label">Total Properties</div></div>
+            <div class="stat-card"><div class="stat-number">${active}</div><div class="stat-label">Active</div></div>
+            <div class="stat-card"><div class="stat-number">${sold}</div><div class="stat-label">Sold</div></div>
+            <div class="stat-card"><div class="stat-number">${formatMoney(totalInvestment)}</div><div class="stat-label">Total Invested</div></div>
+            <div class="stat-card total-profit"><div class="stat-number ${totalProfit >= 0 ? 'profit-positive' : 'profit-negative'}">${totalProfit >= 0 ? '+' : ''}${formatMoney(totalProfit)}</div><div class="stat-label">Total Profit/Loss</div></div>
+            <div class="stat-card"><div class="stat-number">${landCount}</div><div class="stat-label">Land (Active)</div></div>
+            <div class="stat-card"><div class="stat-number">${houseCount}</div><div class="stat-label">Houses (Active)</div></div>
+            <div class="stat-card"><div class="stat-number">${aptCount}</div><div class="stat-label">Apartments (Active)</div></div>
+        `;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Event listeners
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        currentSearch = e.target.value;
+        render();
+    });
+    
+    document.getElementById('clearSearchBtn').addEventListener('click', () => {
+        document.getElementById('searchInput').value = '';
+        currentSearch = '';
+        render();
+    });
+    
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            currentFilter = chip.getAttribute('data-filter');
+            render();
+        });
+    });
+    
+    document.getElementById('addBtn').addEventListener('click', addProperty);
+    
+    // Modal events
+    const modal = document.getElementById('editModal');
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('editForm').addEventListener('submit', saveEditFromModal);
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    loadFromStorage();
+</script>
+</body>
+</html>
